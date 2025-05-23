@@ -16,6 +16,8 @@ public class User {
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
     private List<Project> projects;
 
+    private String token;
+
     public User() { }
 
     public Long getId() {
@@ -37,4 +39,12 @@ public class User {
     public List<Project> getProjects() { return projects; }
 
     public void setProjects(List<Project> projects) { this.projects = projects; }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }
