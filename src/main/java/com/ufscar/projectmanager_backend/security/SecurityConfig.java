@@ -17,12 +17,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        System.out.println("chegou aqui sim!");
-
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> {})
                 .authorizeHttpRequests(authz -> authz
-//                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().permitAll()
                 )
                 .sessionManagement(sess -> sess

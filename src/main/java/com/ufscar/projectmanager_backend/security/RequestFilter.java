@@ -26,24 +26,24 @@ public class RequestFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+
+        String path = request.getRequestURI();
         String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+
+        if (path.equals("/auth/login")) {
+            filterChain.doFilter(request, response);
+        } else if  (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            System.out.println(token);
             Optional<User> optional = this.userService.findByToken(token);
-            System.out.println("optional = " + optional);
 
             if (optional.isPresent()) {
                 User user = optional.get();
                 request.setAttribute("userId", user.getId());
                 request.setAttribute("username", user.getName());
-
-                filterChain.doFilter(request, response);
-
-                return;
             }
+        } else {
+            System.out.println("403!");
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         }
-//        se nao tem token ou nao encontra usuario
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
     }
 }

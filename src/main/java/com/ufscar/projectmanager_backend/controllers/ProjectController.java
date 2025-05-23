@@ -16,8 +16,6 @@ public class ProjectController {
     @PostMapping("/teste")
     public ResponseEntity<Map<String, String>> teste(@RequestBody Map<String, String> body) {
 
-        System.out.println("chegou no controller ufa");
-
         return ResponseEntity.ok(Map.of("teste2", body.get("teste")));
     }
 
