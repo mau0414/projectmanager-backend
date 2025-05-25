@@ -32,10 +32,12 @@ public class Project {
 
     public Project() { }
 
-    public Project(String name, LocalDate startDate, LocalDate endDate) {
+    public Project(String name, LocalDate startDate, LocalDate endDate, String description, User user) {
         this.setTitle(name);
         this.setStartDate(startDate);
         this.setEndDate(endDate);
+        this.setDescription(description);
+        this.setUser(user);
     }
 
     public Long getId() {

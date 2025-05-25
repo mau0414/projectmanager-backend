@@ -40,7 +40,12 @@ public class RequestFilter extends OncePerRequestFilter {
                 User user = optional.get();
                 request.setAttribute("userId", user.getId());
                 request.setAttribute("username", user.getName());
+                filterChain.doFilter(request, response);
+            } else {
+                System.out.println("403 because there is no user related to token received");
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             }
+
         } else {
             System.out.println("403!");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);

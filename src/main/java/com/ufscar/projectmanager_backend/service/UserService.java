@@ -29,4 +29,8 @@ public class UserService {
     public Optional<User> findByToken(String token) {
         return userRepository.findByToken(token);
     }
+
+    public User findById(Long id) {
+        return userRepository.findById(id).get();
+    }
 }
