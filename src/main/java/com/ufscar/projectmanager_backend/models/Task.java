@@ -2,6 +2,7 @@ package com.ufscar.projectmanager_backend.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 
@@ -31,6 +32,15 @@ public class Task {
     private LocalDate endDate;
 
     public Task() { }
+
+    public Task(String title, LocalDate startDate, LocalDate endDate, String description, Project project) {
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setStartDate(startDate);
+        this.setEndDate(endDate);
+        this.setProject(project);
+        this.setStatus(TaskStatus.TODO);
+    }
 
     public Long getId() {
         return id;

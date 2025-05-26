@@ -1,6 +1,7 @@
 package com.ufscar.projectmanager_backend.service;
 
 import com.ufscar.projectmanager_backend.models.Project;
+import com.ufscar.projectmanager_backend.models.User;
 import com.ufscar.projectmanager_backend.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,5 +63,9 @@ public class ProjectService {
         this.projectRepository.deleteById(id);
 
         return listByUserId(userId);
+    }
+
+    public Project findById(Long id) {
+        return projectRepository.findById(id).get();
     }
 }
