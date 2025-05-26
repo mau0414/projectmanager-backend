@@ -30,15 +30,12 @@ public class ProjectController {
         Long userId = (Long) request.getAttribute("userId");
         List<Project> currentProjects = projectService.listByUserId(userId);
 
-        System.out.println("aqui no get vai retornar = " + currentProjects);
-
         return ResponseEntity.ok(Map.of("projects", currentProjects));
     }
 
     @PostMapping("")
     public ResponseEntity<Map<String, List<Project>>> create(@RequestBody Map<String, String> body, HttpServletRequest request) {
 
-        System.out.println("chegou no post certo!");
         Long userId = (Long) request.getAttribute("userId");
         User user = userService.findById(userId);
         String startDateString = body.get("startDate");
@@ -57,6 +54,35 @@ public class ProjectController {
     public ResponseEntity<Map<String, String>> teste(@RequestBody Map<String, String> body) {
 
         return ResponseEntity.ok(Map.of("teste2", body.get("teste")));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, List<Project>>> delete(@PathVariable Long id, HttpServletRequest request) {
+
+        Long userId = (Long) request.getAttribute("userId");
+        List<Project> currentProjects = this.projectService.delete(id, userId);
+
+        return ResponseEntity.ok(Map.of("projects", currentProjects));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, List<Project>>> edit(@PathVariable Long id, @RequestBody Map<String, String> body, HttpServletRequest request) {
+
+        Long userId = (Long) request.getAttribute("userId");
+        String startDateString = body.get("startDate");
+        LocalDate startDate = null;
+        String endDateString = body.get("endDate");
+        LocalDate endDate = null;
+        if (startDateString != null && !startDateString.isEmpty()) startDate = LocalDate.parse(startDateString);
+        if (endDateString != null && !endDateString.isEmpty()) endDate = LocalDate.parse(endDateString);
+        Project project = projectService.byId(id);
+        project.setTitle(body.get("title"));
+        project.setDescription(body.get("description"));
+        project.setStartDate(startDate);
+        project.setEndDate(endDate);
+        List<Project> currentProjects = this.projectService.update(project, userId);
+
+        return ResponseEntity.ok(Map.of("projects", currentProjects));
     }
 
 }

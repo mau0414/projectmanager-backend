@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProjectService {
@@ -18,6 +19,14 @@ public class ProjectService {
         this.projectRepository.save(project);
 
         return listByUserId(project.getUser().getId());
+    }
+
+    public Project byId(long id) {
+        Optional<Project> optional = this.projectRepository.findById(id);
+
+        if (optional.isPresent())
+            return optional.get();
+        else return null;
     }
 
     public List<Project> list() {
@@ -42,14 +51,16 @@ public class ProjectService {
 
         return projects;
     }
-    public List<Project> update() {
+    public List<Project> update(Project project, Long userId) {
 
-        return list();
+        this.projectRepository.save(project);
+
+        return listByUserId(userId);
     }
 
-    public List<Project> delete(Long id) {
+    public List<Project> delete(Long id, Long userId) {
         this.projectRepository.deleteById(id);
 
-        return list();
+        return listByUserId(userId);
     }
 }
