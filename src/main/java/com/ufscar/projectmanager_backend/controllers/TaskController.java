@@ -53,7 +53,7 @@ public class TaskController {
         return ResponseEntity.ok(Map.of("tasks", currentTasks));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("move/{id}")
     public ResponseEntity<Map<String, List<Task>>> moveTask(@PathVariable Long id, @RequestBody Map<String, String> body) {
 
         System.out.println("chegou no put certo de mover task e o task id = " + id);
@@ -77,6 +77,25 @@ public class TaskController {
 
         Long projectId = taskService.byId(id).getProject().getId();
         List<Task> currentTasks = this.taskService.delete(id, projectId);
+
+        return ResponseEntity.ok(Map.of("tasks", currentTasks));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, List<Task>>> edit(@PathVariable Long id, @RequestBody Map<String, String> body) {
+
+        String startDateString = body.get("startDate");
+        LocalDate startDate = null;
+        String endDateString = body.get("endDate");
+        LocalDate endDate = null;
+        if (startDateString != null && !startDateString.isEmpty()) startDate = LocalDate.parse(startDateString);
+        if (endDateString != null && !endDateString.isEmpty()) endDate = LocalDate.parse(endDateString);
+        Task task = taskService.byId(id);
+        task.setTitle(body.get("title"));
+        task.setDescription(body.get("description"));
+        task.setStartDate(startDate);
+        task.setEndDate(endDate);
+        List<Task> currentTasks = this.taskService.update(task);
 
         return ResponseEntity.ok(Map.of("tasks", currentTasks));
     }
