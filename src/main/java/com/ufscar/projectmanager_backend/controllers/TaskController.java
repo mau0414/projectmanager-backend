@@ -27,11 +27,8 @@ public class TaskController {
     @GetMapping("")
     public ResponseEntity<Map<String, List<Task>>> list(@RequestParam Long projectId) {
 
-        System.out.println("chegou no get de tasks");
-
         List<Task> currentTasks = taskService.listByProjectId(projectId);
 
-        System.out.println("retorno de tasks" + currentTasks);
         return ResponseEntity.ok(Map.of("tasks", currentTasks));
     }
 
@@ -55,8 +52,6 @@ public class TaskController {
 
     @PutMapping("move/{id}")
     public ResponseEntity<Map<String, List<Task>>> moveTask(@PathVariable Long id, @RequestBody Map<String, String> body) {
-
-        System.out.println("chegou no put certo de mover task e o task id = " + id);
 
         Task task = taskService.byId(id);
         String taskNewStatusStr = body.get("newStatus");
