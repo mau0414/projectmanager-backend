@@ -30,9 +30,10 @@ public class RequestFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         String authHeader = request.getHeader("Authorization");
 
+        System.out.println(path);
         if (path.equals("/auth/login")) {
             filterChain.doFilter(request, response);
-        } else if  (authHeader != null && authHeader.startsWith("Bearer ")) {
+        } else if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             Optional<User> optional = this.userService.findByToken(token);
 
@@ -45,7 +46,8 @@ public class RequestFilter extends OncePerRequestFilter {
                 System.out.println("403 because there is no user related to token received");
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             }
-
+        } else if (path.startsWith("/swagger") || path.startsWith("/v3")) {
+            filterChain.doFilter(request, response);
         } else {
             System.out.println("403!");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
